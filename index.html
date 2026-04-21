@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ETWA Munich | Europe Third World Association</title>
+  <meta name="description" content="ETWA Munich supports self-help projects worldwide through charitable funding, member contributions, donations, and voluntary work." />
+  <style>
+    :root {
+      --bg: #f6f3ed;
+      --surface: rgba(255,255,255,0.82);
+      --text: #1f2a24;
+      --muted: #5f6d64;
+      --line: rgba(31, 42, 36, 0.12);
+      --accent: #2d6a4f;
+      --shadow: 0 20px 60px rgba(21, 31, 26, 0.10);
+      --radius-xl: 32px;
+      --radius-lg: 24px;
+      --max: 1180px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(192,139,77,0.10), transparent 34%),
+        radial-gradient(circle at right 10% top 20%, rgba(45,106,79,0.10), transparent 28%),
+        linear-gradient(180deg, #f8f5ef 0%, #f5f2eb 100%);
+      line-height: 1.6;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    .container {
+      width: min(calc(100% - 32px), var(--max));
+      margin: 0 auto;
+      padding-left: 8px;
+      padding-right: 8px;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(16px);
+      background: rgba(246, 243, 237, 0.72);
+      border-bottom: 1px solid rgba(31, 42, 36, 0.08);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      min-height: 76px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .brand-icon {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .plant {
+      font-size: 20px;
+    }
+
+    .divider {
+      width: 2px;
+      height: 36px;
+      background: rgba(31, 42, 36, 0.2);
+    }
+
+    .brand-copy {
+      min-width: 0;
+    }
+
+    .brand-copy strong {
+      display: block;
+      font-size: 0.98rem;
+      line-height: 1.2;
+    }
+
+    .brand-copy span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.88rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      color: var(--muted);
+      font-size: 0.96rem;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    .nav-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 16px; /* less tall */
+      border-radius: 999px;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      box-shadow: 0 8px 18px rgba(45,106,79,0.18);
+      white-space: nowrap; /* prevent breaking */
+      font-size: 0.9rem;
+    }
+
+    .hero {
+      padding: 0;
+      min-height: 82vh;
+      display: flex;
+      align-items: center;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,0.55), rgba(0,0,0,0.65)),
+        url('https://images.unsplash.com/photo-1527525443983-6e60c75fff46?q=80&w=1200&auto=format&fit=crop') center/cover no-repeat;
+      color: white;
+    }
+
+    .hero-trust {
+      padding: 42px;
+      padding-top: 96px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      max-width: 860px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2.5rem, 4.7vw, 5rem);
+      line-height: 0.95;
+      letter-spacing: -0.05em;
+    }
+
+    .hero-subtitle {
+      margin-top: 12px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.85);
+    }
+
+    .lead {
+      margin: 20px 0 0;
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.92);
+      max-width: 58ch;
+    }
+
+    .hero-actions {
+      margin-top: 28px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 20px;
+      border-radius: 999px;
+      font-weight: 700;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+
+    .btn-primary {
+      background: var(--accent);
+      color: white;
+      box-shadow: 0 14px 32px rgba(45,106,79,0.20);
+      margin-top: auto; /* push to bottom */
+      width: 100%; /* full width mobile */
+      max-width: 320px;
+      padding: 18px 20px;
+      font-size: 1rem;
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.72);
+      border: 1px solid var(--line);
+      color: var(--text);
+    }
+
+    .trust-cards {
+      margin-top: 28px;
+      display: flex;
+      gap: 14px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+      scrollbar-width: none;
+    }
+
+    .trust-cards::-webkit-scrollbar { display: none; }
+
+    .trust-card {
+      min-width: 220px;
+      flex: 0 0 auto;
+      padding: 18px 16px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.22);
+      backdrop-filter: blur(6px);
+      text-align: center;
+      color: white;
+    }
+
+    .trust-card:first-child { margin-left: 8px; }
+    .trust-card:last-child { margin-right: 8px; }
+
+    .trust-number {
+      font-size: 1.6rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .trust-label {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.82);
+    }
+
+    main {
+      padding: 12px 0 80px;
+    }
+
+    section {
+      margin-top: 28px;
+    }
+
+    .section-shell {
+      background: var(--surface);
+      border: 1px solid rgba(255,255,255,0.7);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      padding: 34px;
+    }
+
+    .section-head {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    .section-kicker {
+      color: var(--accent);
+      font-size: 0.86rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: clamp(1.8rem, 3vw, 3rem);
+      line-height: 1.02;
+      letter-spacing: -0.04em;
+    }
+
+    .section-intro {
+      color: var(--muted);
+      max-width: 70ch;
+      margin: 0;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1.12fr 0.88fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .rich-text p {
+      margin-top: 0;
+      color: #304138;
+    }
+
+    .quote-box {
+      padding: 24px;
+      border-radius: 24px;
+      background: linear-gradient(180deg, rgba(45,106,79,0.08), rgba(45,106,79,0.03));
+      border: 1px solid rgba(45,106,79,0.16);
+    }
+
+    .quote-box small {
+      display: block;
+      color: var(--accent);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .quote-box blockquote {
+      margin: 0;
+      font-size: 1.35rem;
+      line-height: 1.3;
+      letter-spacing: -0.02em;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 16px;
+    }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 170px 1fr;
+      gap: 18px;
+      padding: 20px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .timeline-item:first-child {
+      border-top: none;
+      padding-top: 0;
+    }
+
+    .timeline-item strong {
+      font-size: 1rem;
+    }
+
+    .timeline-item p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .funding-tabs {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .funding-content-wrap {
+      position: relative;
+    }
+
+    .funding-content {
+      display: flex;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      border-radius: var(--radius-lg);
+      height: 300px;
+      color: white;
+      gap: 16px;
+      padding: 0 16px;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .funding-content::-webkit-scrollbar { display: none; }
+
+    .funding-panel {
+      flex: 0 0 100%;
+      max-width: 100%;
+      height: 100%;
+      scroll-snap-align: center;
+      scroll-snap-stop: always;
+      position: relative;
+      padding: 28px 20px;
+      border-radius: var(--radius-lg);
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      text-align: center;
+      gap: 12px;
+      overflow: hidden;
+    }
+
+    
+
+    .funding-panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+    }
+
+    .funding-panel > * {
+      position: relative;
+      z-index: 2;
+      max-width: 90%;
+      margin: 0 auto;
+      word-break: break-word;
+    }
+
+    .funding-panel h3 {
+      margin-top: 6px;
+    }
+
+    .funding-panel p {
+      margin-bottom: 0;
+    }
+
+    .funding-panel h3 {
+      font-size: clamp(1.4rem, 2.2vw, 1.9rem);
+      line-height: 1.2;
+      margin-bottom: 2px;
+    }
+
+    .funding-panel p {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      max-width: 90%;
+      margin-bottom: 8px; /* space before CTA */
+    }
+
+    .funding-dots {
+      position: static; /* move outside the card */
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 12px; /* space from cards */
+    }
+
+    .funding-dots button {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      border: none;
+      padding: 0;
+      background: rgba(0,0,0,0.25); /* darker so visible on light bg */
+      cursor: pointer;
+    }
+
+    .funding-dots button.active {
+      background: var(--accent); /* clear active state */
+    }
+
+    .cta-panel {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 18px;
+      align-items: stretch;
+      overflow: hidden;
+      background: linear-gradient(135deg, #1f4c39, #295943);
+      color: white;
+    }
+
+    .cta-panel .cta-copy,
+    .cta-panel .cta-box {
+      padding: 34px;
+    }
+
+    .cta-panel p {
+      color: rgba(255,255,255,0.78);
+    }
+
+    .cta-box {
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(8px);
+      border-left: 1px solid rgba(255,255,255,0.10);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .cta-list {
+      display: grid;
+      gap: 12px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .cta-list li {
+      padding: 12px 14px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.9);
+    }
+
+    .site-footer {
+      padding: 0 0 42px;
+    }
+
+    .footer-box {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      padding: 18px 0 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .footer-box div:last-child {
+      font-size: 0.7rem; /* very small signature */
+      opacity: 0.6; /* discreet */
+    }
+
+    @media (max-width: 1024px) {
+      .two-col,
+      .cta-panel {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .nav { min-height: 64px; }
+      .nav-links { display: none; }
+      .nav-cta { padding: 8px 12px; font-size: 0.8rem; border-radius: 20px; }
+      .hero { min-height: auto; padding: 20px 0 10px; }
+      .hero-trust { padding: 16px; padding-top: 88px; }
+      h1 { font-size: 1.9rem; line-height: 1.05; }
+      .trust-cards { gap: 10px; }
+      .trust-card { min-width: 180px; }
+      .hero-actions { flex-direction: column; margin-top: 18px; }
+      .btn { width: 100%; padding: 14px; }
+      .section-shell, .cta-panel .cta-copy, .cta-panel .cta-box { padding: 18px; }
+      .timeline-item { grid-template-columns: 1fr; gap: 6px; }
+      .footer-box { flex-direction: column; align-items: flex-start; gap: 6px; }
+      .funding-content { height: 260px; padding: 0 12px; }
+      .funding-panel { flex: 0 0 100%; max-width: 100%; padding: 14px; }
+      .funding-panel h3 { font-size: 1.25rem; }
+      .funding-panel p { font-size: 0.88rem; line-height: 1.45; }
+      .brand-copy span { white-space: normal; overflow: visible; text-overflow: unset; }
+    }
+      .hero { min-height: auto; padding: 20px 0 10px; }
+      .hero-trust { padding: 16px; padding-top: 88px; }
+      h1 { font-size: 1.9rem; line-height: 1.05; }
+      .trust-cards { gap: 10px; }
+      .trust-card { min-width: 180px; }
+      .hero-actions { flex-direction: column; margin-top: 18px; }
+      .btn { width: 100%; padding: 14px; }
+      .section-shell, .cta-panel .cta-copy, .cta-panel .cta-box { padding: 18px; }
+      .timeline-item { grid-template-columns: 1fr; gap: 6px; }
+      .footer-box { flex-direction: column; align-items: flex-start; gap: 6px; }
+      .funding-content { height: 260px; padding: 0 12px; }
+      .funding-panel { flex: 0 0 100%; max-width: 100%; padding: 14px; }
+      .funding-panel h3 { font-size: 1.25rem; }
+      .funding-panel p { font-size: 0.88rem; line-height: 1.45; }
+      .brand-copy span {
+        white-space: normal;
+        overflow: visible;
+        text-overflow: unset;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav">
+      <a href="#top" class="brand" aria-label="ETWA Munich home">
+        <div class="brand-icon">
+          <div class="plant">🌱</div>
+          <div class="divider"></div>
+        </div>
+        <div class="brand-copy">
+          <strong>ETWA Munich</strong>
+          <span>Europe Third World Association</span>
+        </div>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="#about">About</a>
+        <a href="#updates">Updates</a>
+        <a href="#funding">Funding</a>
+        <a href="#team">Committee</a>
+      </nav>
+
+      <a class="nav-cta" href="#join">Join Us</a>
+    </div>
+  </header>
+
+  <section class="hero" id="top">
+    <div class="container">
+      <div class="hero-trust">
+        <h1>ETWA Munich</h1>
+        <p class="hero-subtitle">Helping people to help themselves</p>
+        <p class="lead">
+          We fund small, community-driven projects that create immediate and measurable impact. Every initiative comes from trusted local contacts, ensuring funds reach the right people and are used effectively.
+          <br><br>
+          With no administrative overhead, nearly 100% of contributions go directly to projects on the ground — fully transparent and approved by our members.
+        </p>
+
+        <div class="trust-cards">
+          <div class="trust-card">
+            <div class="trust-number">€58,978</div>
+            <div class="trust-label">Donated (2023–2024)</div>
+          </div>
+          <div class="trust-card">
+            <div class="trust-number">2</div>
+            <div class="trust-label">Projects awaiting funding</div>
+          </div>
+          <div class="trust-card">
+            <div class="trust-number">0</div>
+            <div class="trust-label">No administration costs</div>
+          </div>
+          <div class="trust-card">
+            <div class="trust-number">1%</div>
+            <div class="trust-label">Members contributions</div>
+          </div>
+          <div class="trust-card">
+            <div class="trust-number">9</div>
+            <div class="trust-label">Projects funded</div>
+          </div>
+        </div>
+
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#join">Become a Member</a>
+          <a class="btn btn-secondary" href="#funding">View how funds are used</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main>
+    <section id="about">
+      <div class="container section-shell">
+        <div class="section-head">
+          <div class="section-kicker">What we do</div>
+          <h2>Charitable funding for self-help projects worldwide</h2>
+          <p class="section-intro">
+            We generally support small-scale projects of genuine immediate benefit to those involved, with a strong preference for initiatives that come directly from the people concerned.
+          </p>
+        </div>
+
+        <div class="two-col">
+          <div class="rich-text">
+            <p>
+              We provide charitable funding of self-help projects worldwide, focusing on small-scale initiatives that create immediate and tangible impact for the communities involved.
+            </p>
+            <p>
+              Our work spans diverse areas, from women's self-empowerment in India, to education for street children in Guatemala, to supporting vocational infrastructure such as carpentry workshops in Ghana. Each project is practical, local, and designed to solve real problems.
+            </p>
+            <p>
+              What makes ETWA different is how projects originate: they come directly from the people concerned, usually through trusted personal connections within our network. This ensures that funds reach the right people and are used effectively.
+            </p>
+            <p>
+              Because all organisational work is carried out voluntarily, we operate with virtually no administrative overhead. This means that almost every contribution goes directly to supporting projects on the ground.
+            </p>
+          </div>
+
+          <aside class="quote-box">
+            <small>Our motto</small>
+            <blockquote>
+              “Helping people to help themselves”.
+            </blockquote>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section id="updates">
+      <div class="container section-shell">
+        <div class="section-head">
+          <div class="section-kicker">How it works</div>
+          <h2>A transparent, member-driven process</h2>
+          <p class="section-intro">
+            Every project follows a clear and accountable path — from proposal to funding to reporting.
+          </p>
+        </div>
+
+        <div class="timeline">
+          <div class="timeline-item">
+            <strong>1. Project proposed</strong>
+            <p>
+              Initiatives come directly from trusted local contacts, ensuring real needs and real impact.
+            </p>
+          </div>
+          <div class="timeline-item">
+            <strong>2. Members review</strong>
+            <p>
+              Projects are discussed collectively during members’ meetings, with full transparency.
+            </p>
+          </div>
+          <div class="timeline-item">
+            <strong>3. Funding approved</strong>
+            <p>
+              Only projects approved by members receive funding, ensuring shared responsibility.
+            </p>
+          </div>
+          <div class="timeline-item">
+            <strong>4. Results reported</strong>
+            <p>
+              Progress and outcomes are documented and shared through reports and updates.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="funding">
+      <div class="container section-shell">
+        <div class="section-head">
+          <div class="section-kicker">Funding</div>
+          <h2>Where the money comes from</h2>
+          <p class="section-intro">
+            ETWA is sustained by members, donors, and fundraising activities that directly support its charitable mission.
+          </p>
+        </div>
+
+        <div class="funding-tabs">
+          <div class="funding-content-wrap">
+            <div class="funding-content">
+              <article class="funding-panel" id="membership" style="background-image:url('https://images.unsplash.com/photo-1740208376134-67da8e85ccf3?q=80&w=1932&auto=format&fit=crop');">
+                <h3>Memberships</h3>
+                <p>
+                  Membership is open to anyone. Members contribute around one thousandth of their annual salary each year to the Association, and many give considerably more.
+                </p>
+                <a class="btn btn-primary" href="#join">Become a Member</a>
+              </article>
+
+              <article class="funding-panel" id="donations" style="background-image:url('https://images.unsplash.com/photo-1708945503671-e6a5d0c4c6b1?q=80&w=1171&auto=format&fit=crop');">
+                <h3>Donations</h3>
+                <p>
+                  Funding also comes from private donations, collecting boxes, and donated items such as books, CDs and records.
+                </p>
+                <a class="btn btn-primary" href="#join">Make a Donation</a>
+              </article>
+
+              <article class="funding-panel" id="fundraising" style="background-image:url('https://images.unsplash.com/photo-1463320726281-696a485928c7?q=80&w=1170&auto=format&fit=crop');">
+                <h3>Fundraising</h3>
+                <p>
+                  Fairs, tombolas, greeting cards, book sales and similar initiatives contribute to the association’s ability to fund projects.
+                </p>
+                <a class="btn btn-primary" href="#updates">Upcoming Events</a>
+              </article>
+            </div>
+
+            <div class="funding-dots" aria-label="Funding slides navigation">
+              <button type="button" class="active" aria-label="Show memberships"></button>
+              <button type="button" aria-label="Show donations"></button>
+              <button type="button" aria-label="Show fundraising"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="team">
+      <div class="container section-shell">
+        <div class="section-head">
+          <div class="section-kicker">Who does what</div>
+          <h2>A volunteer-led organisation</h2>
+          <p class="section-intro">
+            The association is organised and managed by volunteers who coordinate projects, meetings, finances and reporting.
+          </p>
+        </div>
+
+        <div class="timeline">
+          <div class="timeline-item">
+            <strong>Committee members</strong>
+            <p>
+              Elected by members at the Annual General Meeting, they handle organisation, pre-evaluation of new project proposals, meetings, minutes, fund administration and membership support.
+            </p>
+          </div>
+          <div class="timeline-item">
+            <strong>Treasurer & auditor</strong>
+            <p>
+              The treasurer maintains the accounts, while an auditor appointed at the Annual General Meeting reviews the financial reports.
+            </p>
+          </div>
+          <div class="timeline-item">
+            <strong>Chairperson</strong>
+            <p>
+              Responsible for overall coordination and for writing the annual reports.
+            </p>
+          </div>
+          <div class="timeline-item">
+            <strong>Local contact persons</strong>
+            <p>
+              A wider network of volunteers supports the association through trusted local and project-related contacts.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="join">
+      <div class="container section-shell cta-panel">
+        <div class="cta-copy">
+          <div class="section-kicker" style="color: rgba(255,255,255,0.72);">Join us</div>
+          <h2 style="color: white;">Support practical projects with real human impact</h2>
+          <p>
+            If you wish to join the Association, you can add a membership link here. If you wish to make a donation, you can also add a dedicated bank-details page or donation section.
+          </p>
+          <div class="hero-actions" style="margin-top: 22px;">
+            <a class="btn btn-secondary" href="#" style="background: white; color: var(--text); border: none;">Join the Association</a>
+            <a class="btn" href="#" style="background: rgba(255,255,255,0.10); color: white; border: 1px solid rgba(255,255,255,0.14);">See bank details</a>
+          </div>
+        </div>
+
+        <div class="cta-box">
+          <ul class="cta-list">
+            <li>Open membership for anyone who wants to contribute</li>
+            <li>Transparent project review through member meetings</li>
+            <li>Low overhead and direct charitable purpose</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-box">
+      <div>© ETWA Munich — Europe Third World Association</div>
+      <div>Site designed, crafted and developed by RosettaVentures</div>
+    </div>
+  </footer>
+
+  
+</body>
+</html>
