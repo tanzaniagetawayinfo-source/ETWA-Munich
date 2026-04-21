@@ -37,10 +37,10 @@
     img { max-width: 100%; display: block; }
 
     .container {
-      width: min(calc(100% - 32px), var(--max));
+      width: 100%;
       margin: 0 auto;
-      padding-left: 8px;
-      padding-right: 8px;
+      padding-left: 0;
+      padding-right: 0;
     }
 
     .site-header {
@@ -170,8 +170,9 @@
     .hero-actions {
       margin-top: 28px;
       display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
+      flex-wrap: nowrap;
+      gap: 10px;
+      width: 100%;
     }
 
     .btn {
@@ -191,25 +192,31 @@
       background: var(--accent);
       color: white;
       box-shadow: 0 14px 32px rgba(45,106,79,0.20);
-      margin-top: auto; /* push to bottom */
-      width: 100%; /* full width mobile */
-      max-width: 320px;
-      padding: 18px 20px;
-      font-size: 1rem;
+      flex: 1;
+      width: auto;
+      max-width: none;
+      padding: 16px 14px;
+      font-size: 0.95rem;
     }
 
     .btn-secondary {
       background: rgba(255,255,255,0.72);
       border: 1px solid var(--line);
       color: var(--text);
+      flex: 1;
+      width: auto;
     }
 
     .trust-cards {
       margin-top: 28px;
       display: flex;
-      gap: 14px;
+      gap: 12px;
       overflow-x: auto;
-      padding-bottom: 6px;
+      padding: 0;
+      margin-left: -12px;
+      margin-right: -12px;
+      padding-left: 12px;
+      padding-right: 12px;
       scrollbar-width: none;
     }
 
@@ -227,7 +234,8 @@
       color: white;
     }
 
-    .trust-card:first-child { margin-left: 8px; }
+    .trust-card:first-child { margin-left: 0; }
+    .trust-card:last-child { margin-right: 0; }
     .trust-card:last-child { margin-right: 8px; }
 
     .trust-number {
@@ -530,25 +538,28 @@
       .hero { min-height: auto; padding: 20px 0 10px; }
       .hero-trust { padding: 16px; padding-top: 88px; }
       h1 { font-size: 1.9rem; line-height: 1.05; }
-      .trust-cards { gap: 10px; }
+
+      .trust-cards {
+        gap: 10px;
+        margin-left: 0;
+        margin-right: 0;
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+
       .trust-card { min-width: 180px; }
-      .hero-actions { flex-direction: column; margin-top: 18px; }
-      .btn { width: 100%; padding: 14px; }
-      .section-shell, .cta-panel .cta-copy, .cta-panel .cta-box { padding: 18px; }
-      .timeline-item { grid-template-columns: 1fr; gap: 6px; }
-      .footer-box { flex-direction: column; align-items: flex-start; gap: 6px; }
-      .funding-content { height: 260px; padding: 0 12px; }
-      .funding-panel { flex: 0 0 100%; max-width: 100%; padding: 14px; }
-      .funding-panel h3 { font-size: 1.25rem; }
-      .funding-panel p { font-size: 0.88rem; line-height: 1.45; }
-      .brand-copy span { white-space: normal; overflow: visible; text-overflow: unset; }
-    }
-      .hero { min-height: auto; padding: 20px 0 10px; }
-      .hero-trust { padding: 16px; padding-top: 88px; }
-      h1 { font-size: 1.9rem; line-height: 1.05; }
-      .trust-cards { gap: 10px; }
-      .trust-card { min-width: 180px; }
-      .hero-actions { flex-direction: column; margin-top: 18px; }
+
+      .hero-actions {
+        flex-direction: row;
+        gap: 10px;
+        width: 100%;
+      }
+
+      .hero-actions .btn {
+        flex: 1;
+        width: auto;
+        white-space: nowrap;
+      }
       .btn { width: 100%; padding: 14px; }
       .section-shell, .cta-panel .cta-copy, .cta-panel .cta-box { padding: 18px; }
       .timeline-item { grid-template-columns: 1fr; gap: 6px; }
@@ -596,10 +607,10 @@
         <h1>ETWA Munich</h1>
         <p class="hero-subtitle">Helping people to help themselves</p>
         <p class="lead">
-          We fund small, community-driven projects that create immediate and measurable impact. Every initiative comes from trusted local contacts, ensuring funds reach the right people and are used effectively.
-          <br><br>
-          With no administrative overhead, nearly 100% of contributions go directly to projects on the ground — fully transparent and approved by our members.
+          Small, community-driven projects with immediate, measurable impact. Funds go directly to trusted local initiatives — transparent, member-reviewed, and nearly 100% on the ground.
         </p>
+
+        <div style="margin-top:20px; margin-bottom:6px; font-weight:600; font-size:0.95rem; color:rgba(255,255,255,0.85); text-align:center;">Our numbers</div>
 
         <div class="trust-cards">
           <div class="trust-card">
@@ -612,11 +623,11 @@
           </div>
           <div class="trust-card">
             <div class="trust-number">0</div>
-            <div class="trust-label">No administration costs</div>
+            <div class="trust-label">Administration costs</div>
           </div>
           <div class="trust-card">
             <div class="trust-number">1%</div>
-            <div class="trust-label">Members contributions</div>
+            <div class="trust-label">Avg. member contribution<br>as % of annual salary</div>
           </div>
           <div class="trust-card">
             <div class="trust-number">9</div>
@@ -625,8 +636,8 @@
         </div>
 
         <div class="hero-actions">
-          <a class="btn btn-primary" href="#join">Become a Member</a>
-          <a class="btn btn-secondary" href="#funding">View how funds are used</a>
+          <a class="btn btn-primary" href="#join">Get involved</a>
+          <a class="btn btn-secondary" href="#funding">Support our work</a>
         </div>
       </div>
     </div>
