@@ -1251,14 +1251,25 @@
       }
     };
 
-    // Check session
+    // Handle session + magic link redirect
     (async () => {
-      const { data: { user } } = await supabaseClient.auth.getUser();
-      if (user) {
-        loginBtn.textContent = 'Logout';
-        loginBtn.onclick = async () => {
-          await supabaseClient.auth.signOut();
-          location.reload();
+      const { data: { session } } = await supabaseClient.auth.getSession();
+
+      if (session) {
+        // USER LOGGED → update UI
+        loginBtn.textContent = 'Dashboard';
+        loginBtn.onclick = () => {
+          window.location.href = 'dashboard.html';
+        };
+
+        // 🔥 IMPORTANT: if coming from email (magic/reset), force redirect
+        if (window.location.hash.includes('access_token')) {
+          window.location.href = 'dashboard.html';
+        }
+      } else {
+        loginBtn.textContent = 'Login';
+        loginBtn.onclick = () => {
+          document.getElementById('login-modal').style.display = 'flex';
         };
       }
     })();
