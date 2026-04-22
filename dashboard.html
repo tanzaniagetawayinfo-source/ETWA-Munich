@@ -48,9 +48,8 @@ async function init(){
   currentUser = user;
   document.getElementById('user').innerText = "Logged as: " + user.email;
 
-  if(user.email === "YOUR_EMAIL_HERE"){
-    document.getElementById('admin-panel').style.display = "block";
-  }
+  // Admin panel is always visible, but backend enforces permissions
+  document.getElementById('admin-panel').style.display = "block";
 
   loadProjects();
 }
