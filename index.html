@@ -1196,5 +1196,72 @@
       });
     }
 </script>
+  <!-- SUPABASE LOGIN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const supabaseClient = supabase.createClient(
+      'https://btlnftedaituncygbwcy.supabase.co',
+      'sb_publishable_U2yl2e50jQK3-x2EGCGVEg_Zc_4KNfT'
+    );
+
+    // Simple UI injection (login modal)
+    const loginUI = document.createElement('div');
+    loginUI.innerHTML = `
+      <div id="login-modal" style="position:fixed; inset:0; background:rgba(0,0,0,0.6); display:none; align-items:center; justify-content:center; z-index:999;">
+        <div style="background:#0d1b2f; padding:24px; border-radius:16px; width:90%; max-width:320px;">
+          <h3 style="margin-top:0;">Login</h3>
+          <input id="login-email" placeholder="Email" style="width:100%; margin-bottom:10px; padding:10px; border-radius:8px; border:none;" />
+          <input id="login-password" type="password" placeholder="Password" style="width:100%; margin-bottom:10px; padding:10px; border-radius:8px; border:none;" />
+          <button id="login-btn" style="width:100%; padding:10px; border:none; border-radius:8px; background:#7dd3fc; color:#000; font-weight:bold;">Login</button>
+          <button id="close-login" style="width:100%; margin-top:8px; padding:8px; background:none; border:none; color:#fff;">Close</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(loginUI);
+
+    // Add login button in nav
+    const navLinks = document.querySelector('.nav-links');
+    const loginBtn = document.createElement('button');
+    loginBtn.textContent = 'Login';
+    loginBtn.className = 'btn';
+    navLinks.appendChild(loginBtn);
+
+    loginBtn.onclick = () => {
+      document.getElementById('login-modal').style.display = 'flex';
+    };
+
+    document.getElementById('close-login').onclick = () => {
+      document.getElementById('login-modal').style.display = 'none';
+    };
+
+    document.getElementById('login-btn').onclick = async () => {
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-password').value;
+
+      const { data, error } = await supabaseClient.auth.signInWithPassword({
+        email,
+        password
+      });
+
+      if (error) {
+        alert(error.message);
+      } else {
+        document.getElementById('login-modal').style.display = 'none';
+        window.location.href = '/dashboard.html';
+      }
+    };
+
+    // Check session
+    (async () => {
+      const { data: { user } } = await supabaseClient.auth.getUser();
+      if (user) {
+        loginBtn.textContent = 'Logout';
+        loginBtn.onclick = async () => {
+          await supabaseClient.auth.signOut();
+          location.reload();
+        };
+      }
+    })();
+  </script>
 </body>
 </html>
