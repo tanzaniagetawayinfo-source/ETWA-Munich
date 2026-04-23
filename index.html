@@ -438,15 +438,15 @@ body::before{
       <div class="label">Years of activity</div>
     </div>
     <div class="card number">
-      <div class="num notranslate" translate="no" data-target="1200000" data-currency="true" aria-label="€1.2M">€1.2M</div>
+      <div class="num notranslate" translate="no" data-target="2100000" data-currency="true" aria-label="€2.1M">€2.1M</div>
       <div class="label">Donated via ETWA Munich</div>
     </div>
     <div class="card number">
-      <div class="num notranslate" translate="no" data-target="0">0</div>
+      <div class="num notranslate" translate="no" data-target="0" data-prefix="~">0</div>
       <div class="label">Management costs</div>
     </div>
     <div class="card number">
-      <div class="num notranslate" translate="no" data-target="180">0</div>
+      <div class="num notranslate" translate="no" data-target="180" data-prefix=">">0</div>
       <div class="label">Members</div>
     </div>
     <div class="card number">
@@ -485,11 +485,11 @@ body::before{
 <section class="section">
   <h2>How it works</h2>
   <div class="how-flow">
-    <div class="how-box">Projects are proposed by the people concerned through trusted contacts.</div>
+    <div class="how-box">Projects originate from a growing network of trusted local contacts who identify real needs, propose initiatives, and continuously document progress on the ground.</div>
     <div class="how-arrow">→</div>
-    <div class="how-box">Members take part in deciding which projects receive support.</div>
+    <div class="how-box">ETWA operates as a truly democratic NGO: members actively review proposals, discuss impact, and vote on which projects receive funding.</div>
     <div class="how-arrow">→</div>
-    <div class="how-box">Funds are allocated with no administrative overhead beyond banking.</div>
+    <div class="how-box">Funds are allocated directly to approved projects, with transparent follow-up and ongoing reporting to ensure measurable, real-world results.</div>
   </div>
 </section>
 
@@ -539,17 +539,20 @@ body::before{
     yearsEl.dataset.target = String(new Date().getFullYear() - 1997);
   }
 
-  function formatNumber(num, isCurrency) {
+  function formatNumber(num, isCurrency, prefix) {
     let value;
     if (num >= 1000000) value = (num / 1000000).toFixed(1) + 'M';
     else if (num >= 1000) value = (num / 1000).toFixed(0) + 'K';
     else value = String(num);
-    return isCurrency ? '€' + value : value;
+    let result = isCurrency ? '€' + value : value;
+    if(prefix) result = prefix + result;
+    return result;
   }
 
   function animateValue(el) {
     const target = parseInt(el.dataset.target || '0', 10);
     const isCurrency = el.dataset.currency === 'true';
+    const prefix = el.dataset.prefix || '';
     const duration = 1200;
     const startTime = performance.now();
 
@@ -557,7 +560,7 @@ body::before{
       const progress = Math.min((now - startTime) / duration, 1);
       const eased = 1 - Math.pow(1 - progress, 3);
       const value = Math.round(target * eased);
-      el.textContent = formatNumber(value, isCurrency);
+      el.textContent = formatNumber(value, isCurrency, prefix);
       if (progress < 1) requestAnimationFrame(tick);
     }
 
