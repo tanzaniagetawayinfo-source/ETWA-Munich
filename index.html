@@ -1252,17 +1252,34 @@
     };
 
     // Handle session + magic link redirect
+    // Handle session + keep UI in sync
+    supabaseClient.auth.onAuthStateChange((event, session) => {
+      console.log('AUTH EVENT:', event);
+
+      if (event === 'SIGNED_OUT') {
+        loginBtn.textContent = 'Login';
+        loginBtn.onclick = () => {
+          document.getElementById('login-modal').style.display = 'flex';
+        };
+      }
+
+      if (session) {
+        loginBtn.textContent = 'Dashboard';
+        loginBtn.onclick = () => {
+          window.location.href = 'dashboard.html';
+        };
+      }
+    });
+
     (async () => {
       const { data: { session } } = await supabaseClient.auth.getSession();
 
       if (session) {
-        // USER LOGGED → update UI
         loginBtn.textContent = 'Dashboard';
         loginBtn.onclick = () => {
           window.location.href = 'dashboard.html';
         };
 
-        // 🔥 IMPORTANT: if coming from email (magic/reset), force redirect
         if (window.location.hash.includes('access_token')) {
           window.location.href = 'dashboard.html';
         }
