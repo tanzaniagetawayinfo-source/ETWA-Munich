@@ -172,18 +172,28 @@ body::before{
   max-width:220px;
   font-size:14px;
   line-height:1.5;
+  opacity:0;
+  transform:translateY(26px) scale(0.98);
+  transition:opacity .7s ease, transform .7s ease;
+}
+.how-box.visible{
+  opacity:1;
+  transform:translateY(0) scale(1);
 }
 .how-arrow{
   font-size:22px;
+  opacity:0;
+  transform:translateY(10px);
+  transition:opacity .6s ease, transform .6s ease;
+}
+.how-arrow.visible{
   opacity:0.6;
+  transform:translateY(0);
 }
 
 @media(max-width:767px){
   .how-flow{
     flex-direction:column;
-  }
-  .how-arrow{
-    transform:rotate(90deg);
   }
 }
 .numbers-row{
@@ -455,7 +465,7 @@ body::before{
     </div>
     <div class="card number">
       <div class="num notranslate" translate="no" data-target="2">0</div>
-      <div class="label">Projects in funding</div>
+      <div class="label">Projects in progress</div>
     </div>
     <div class="card number">
       <div class="num notranslate" translate="no" data-target="3">0</div>
@@ -486,15 +496,15 @@ body::before{
   <h2>How it works</h2>
   <div class="how-flow">
     <div class="how-box">Projects originate from a growing network of trusted local contacts who identify real needs, propose initiatives, and continuously document progress on the ground.</div>
-    <div class="how-arrow">→</div>
+    <div class="how-arrow">↓</div>
     <div class="how-box">ETWA operates as a truly democratic NGO: members actively review proposals, discuss impact, and vote on which projects receive funding.</div>
-    <div class="how-arrow">→</div>
+    <div class="how-arrow">↓</div>
     <div class="how-box">Funds are allocated directly to approved projects, with transparent follow-up and ongoing reporting to ensure measurable, real-world results.</div>
   </div>
 </section>
 
 <section class="section">
-  <h2>Funding</h2>
+  <h2>How we fund</h2>
   <div class="funding-row">
     <div class="funding-card">
       <div class="funding-icon">
@@ -577,6 +587,21 @@ body::before{
   }, { threshold: 0.5 });
 
   document.querySelectorAll('.num').forEach(el => numberObserver.observe(el));
+
+  const howObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const items = Array.from(document.querySelectorAll('.how-box, .how-arrow'));
+        items.forEach((item, index) => {
+          setTimeout(() => item.classList.add('visible'), index * 140);
+        });
+        howObserver.disconnect();
+      }
+    });
+  }, { threshold: 0.25 });
+
+  const howFlow = document.querySelector('.how-flow');
+  if (howFlow) howObserver.observe(howFlow);
 
   const container = document.getElementById('globe');
   const impactCard = document.getElementById('impactCard');
