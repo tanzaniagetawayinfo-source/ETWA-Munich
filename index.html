@@ -9,7 +9,6 @@
 :root{
   --bg:#0b1220;
   --panel:rgba(255,255,255,0.05);
-  --panel-2:rgba(255,255,255,0.08);
   --line:rgba(255,255,255,0.12);
   --text:#ffffff;
   --muted:rgba(255,255,255,0.74);
@@ -119,14 +118,6 @@ body{
   display:grid;
   gap:20px;
 }
-.title{
-  font-size:22px;
-  font-weight:700;
-}
-.subtitle{
-  opacity:0.8;
-  font-size:14px;
-}
 .numbers-row{
   display:flex;
   gap:16px;
@@ -154,7 +145,6 @@ body{
 }
 .impact-wrap{
   position:relative;
-  min-height:520px;
 }
 .impact-card{
   position:relative;
@@ -163,21 +153,21 @@ body{
   border:1px solid rgba(255,255,255,0.08);
   border-radius:24px;
   overflow:hidden;
-  min-height:520px;
 }
 #globe{
   width:100%;
   height:520px;
+  cursor:grab;
+  touch-action:none;
+}
+#globe.dragging{
+  cursor:grabbing;
 }
 .impact-legend{
-  position:absolute;
-  left:20px;
-  bottom:20px;
-  z-index:2;
+  margin-top:16px;
   display:flex;
   flex-wrap:wrap;
   gap:10px;
-  pointer-events:none;
 }
 .impact-pill{
   background:rgba(8,14,26,0.58);
@@ -189,9 +179,11 @@ body{
   color:rgba(255,255,255,0.88);
 }
 .globe-popup{
-  position:fixed;
-  z-index:1001;
-  width:min(290px, calc(100vw - 32px));
+  position:absolute;
+  left:0;
+  top:0;
+  z-index:3;
+  width:min(260px, calc(100% - 24px));
   padding:14px 16px;
   border-radius:18px;
   background:rgba(8,14,26,0.88);
@@ -201,7 +193,7 @@ body{
   opacity:0;
   pointer-events:none;
   transform:translateY(10px);
-  transition:opacity .24s ease, transform .24s ease;
+  transition:opacity .22s ease, transform .22s ease;
 }
 .globe-popup.visible{
   opacity:1;
@@ -315,18 +307,18 @@ body{
 <section class="section">
   <h2>Our impact</h2>
   <div class="impact-wrap">
-    <div class="impact-card">
+    <div class="impact-card" id="impactCard">
       <div id="globe"></div>
-      <div class="impact-legend">
-        <div class="impact-pill">India · Women’s self empowerment</div>
-        <div class="impact-pill">Guatemala · Street children education</div>
-        <div class="impact-pill">Ghana · Carpentry workshop equipment</div>
-      </div>
       <div id="globePopup" class="globe-popup" aria-hidden="true">
         <div class="globe-popup-title" id="globePopupTitle"></div>
         <div class="globe-popup-subtitle" id="globePopupSubtitle"></div>
         <p class="globe-popup-text" id="globePopupText"></p>
       </div>
+    </div>
+    <div class="impact-legend">
+      <div class="impact-pill">India · Women’s self empowerment</div>
+      <div class="impact-pill">Guatemala · Street children education</div>
+      <div class="impact-pill">Ghana · Carpentry workshop equipment</div>
     </div>
   </div>
 </section>
@@ -355,7 +347,6 @@ body{
 </section>
 
 <script src="https://cdn.jsdelivr.net/npm/three@0.134.0/build/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.134.0/examples/js/controls/OrbitControls.js"></script>
 <script>
 (function(){
   const yearsEl = document.getElementById('yearsSince');
@@ -371,18 +362,15 @@ body{
 
   function animateValue(el){
     const target = parseInt(el.dataset.target || '0', 10);
-    const start = 0;
     const duration = 1200;
     const startTime = performance.now();
-
     function tick(now){
       const progress = Math.min((now - startTime) / duration, 1);
       const eased = 1 - Math.pow(1 - progress, 3);
-      const value = Math.round(start + (target - start) * eased);
+      const value = Math.round(target * eased);
       el.textContent = formatNumber(value);
       if (progress < 1) requestAnimationFrame(tick);
     }
-
     requestAnimationFrame(tick);
   }
 
@@ -398,21 +386,22 @@ body{
   document.querySelectorAll('.num').forEach(el => numberObserver.observe(el));
 
   const container = document.getElementById('globe');
-  if (!container || typeof THREE === 'undefined' || typeof THREE.OrbitControls === 'undefined') return;
-
-  const popup = document.getElementById('globePopup');
   const impactCard = document.getElementById('impactCard');
+  const popup = document.getElementById('globePopup');
   const popupTitle = document.getElementById('globePopupTitle');
   const popupSubtitle = document.getElementById('globePopupSubtitle');
   const popupText = document.getElementById('globePopupText');
 
+  if (!container || !impactCard || !popup || !popupTitle || !popupSubtitle || !popupText) return;
+  if (typeof THREE === 'undefined') return;
+
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(42, container.clientWidth / container.clientHeight, 0.1, 1000);
-  camera.position.set(0, 0, 4.6);
+  const camera = new THREE.PerspectiveCamera(42, container.clientWidth / Math.max(container.clientHeight, 1), 0.1, 1000);
+  camera.position.set(0, 0, 5.2);
 
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  renderer.setSize(container.clientWidth, container.clientHeight);
+  renderer.setSize(container.clientWidth, container.clientHeight || 420);
   container.appendChild(renderer.domElement);
 
   scene.add(new THREE.AmbientLight(0xffffff, 0.95));
@@ -426,38 +415,20 @@ body{
   const textureLoader = new THREE.TextureLoader();
   const earthTexture = textureLoader.load('https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg');
 
-  const sphere = new THREE.Mesh(
-    new THREE.SphereGeometry(1.45, 64, 64),
-    new THREE.MeshPhongMaterial({
-      map: earthTexture,
-      transparent: true,
-      opacity: 0.86,
-      shininess: 18
-    })
-  );
-  globeGroup.add(sphere);
+  globeGroup.add(new THREE.Mesh(
+    new THREE.SphereGeometry(1.3, 64, 64),
+    new THREE.MeshPhongMaterial({ map: earthTexture, transparent: true, opacity: 0.86, shininess: 18 })
+  ));
 
-  const wire = new THREE.Mesh(
-    new THREE.SphereGeometry(1.452, 48, 48),
-    new THREE.MeshBasicMaterial({
-      color: 0xe5f0ff,
-      transparent: true,
-      opacity: 0.10,
-      wireframe: true
-    })
-  );
-  globeGroup.add(wire);
+  globeGroup.add(new THREE.Mesh(
+    new THREE.SphereGeometry(1.302, 48, 48),
+    new THREE.MeshBasicMaterial({ color: 0xe5f0ff, transparent: true, opacity: 0.08, wireframe: true })
+  ));
 
-  const atmosphere = new THREE.Mesh(
-    new THREE.SphereGeometry(1.56, 48, 48),
-    new THREE.MeshBasicMaterial({
-      color: 0x9ed8ff,
-      transparent: true,
-      opacity: 0.05,
-      side: THREE.BackSide
-    })
-  );
-  globeGroup.add(atmosphere);
+  globeGroup.add(new THREE.Mesh(
+    new THREE.SphereGeometry(1.42, 48, 48),
+    new THREE.MeshBasicMaterial({ color: 0x9ed8ff, transparent: true, opacity: 0.05, side: THREE.BackSide })
+  ));
 
   function latLngToVector3(lat, lng, radius){
     const phi = (90 - lat) * (Math.PI / 180);
@@ -496,21 +467,22 @@ body{
   const markers = [];
   const raycaster = new THREE.Raycaster();
   const pointer = new THREE.Vector2();
-  const controls = new THREE.OrbitControls(camera, renderer.domElement);
-  controls.enableDamping = true;
-  controls.dampingFactor = 0.06;
-  controls.enableZoom = false;
-  controls.enablePan = false;
-  controls.minPolarAngle = 0.4;
-  controls.maxPolarAngle = Math.PI - 0.4;
 
-  globeGroup.rotation.y = -0.8;
-  globeGroup.rotation.x = 0.18;
+  let activeMarker = null;
+  let isDragging = false;
+  let moved = false;
+  let dragX = 0;
+  let dragY = 0;
+  let targetRotX = 0.18;
+  let targetRotY = -0.8;
+  let focusAnim = null;
+
+  globeGroup.rotation.x = targetRotX;
+  globeGroup.rotation.y = targetRotY;
 
   projects.forEach(project => {
     const markerGroup = new THREE.Group();
-    const position = latLngToVector3(project.lat, project.lng, 1.5);
-    markerGroup.position.copy(position);
+    markerGroup.position.copy(latLngToVector3(project.lat, project.lng, 1.35));
     markerGroup.userData = project;
 
     const dot = new THREE.Mesh(
@@ -530,44 +502,35 @@ body{
     markers.push(markerGroup);
   });
 
-  let activeMarker = null;
-  let rotatingToMarker = false;
-  const targetQuaternion = new THREE.Quaternion();
-  const frontVector = new THREE.Vector3(0, 0, 1);
-
-  function updatePopupPosition(){
-    if (!activeMarker || !popup.classList.contains('visible')) return;
-
-    const worldPosition = activeMarker.getWorldPosition(new THREE.Vector3());
-    const projected = worldPosition.clone().project(camera);
-    const rect = renderer.domElement.getBoundingClientRect();
-    const cardRect = impactCard.getBoundingClientRect();
-
-    const x = ((projected.x + 1) / 2) * rect.width;
-    const y = ((-projected.y + 1) / 2) * rect.height;
-
-    const popupWidth = Math.min(290, cardRect.width - 24);
-    const centeredLeft = x - popupWidth / 2;
-    const clampedLeft = Math.max(12, Math.min(centeredLeft, cardRect.width - popupWidth - 12));
-    const desiredTop = y + 24;
-    const clampedTop = Math.max(12, Math.min(desiredTop, cardRect.height - 128));
-
-    popup.style.width = popupWidth + 'px';
-    popup.style.left = clampedLeft + 'px';
-    popup.style.top = clampedTop + 'px';
-  }
-
-  function computeTargetRotation(marker){
-    const v = marker.position.clone().normalize();
-    const yaw = Math.atan2(v.x, v.z);
-    const pitch = -Math.asin(v.y);
-    return { x: pitch, y: yaw };
-  }
-
   function setPopupContent(data){
     popupTitle.textContent = data.name;
     popupSubtitle.textContent = data.subtitle;
     popupText.textContent = data.desc;
+  }
+
+  function updatePopupPosition(){
+    if (!activeMarker || !popup.classList.contains('visible')) return;
+    if (!renderer || !renderer.domElement) return;
+
+    const worldPosition = activeMarker.getWorldPosition(new THREE.Vector3());
+    const projected = worldPosition.clone().project(camera);
+    const canvasRect = renderer.domElement.getBoundingClientRect();
+    const cardRect = impactCard.getBoundingClientRect();
+    if (!canvasRect || !cardRect) return;
+
+    const x = ((projected.x + 1) / 2) * canvasRect.width;
+    const y = ((-projected.y + 1) / 2) * canvasRect.height;
+    const popupWidth = Math.min(260, Math.max(cardRect.width - 24, 140));
+    // center more precisely relative to marker
+    const left = Math.max(12, Math.min(x - popupWidth / 2, cardRect.width - popupWidth - 12));
+
+    // shift popup slightly upward so it visually aligns with marker center
+    const verticalOffset = 8;
+    const top = Math.max(12, Math.min(y - verticalOffset, cardRect.height - 128));
+
+    popup.style.width = popupWidth + 'px';
+    popup.style.left = left + 'px';
+    popup.style.top = top + 'px';
   }
 
   function showPopup(data){
@@ -584,14 +547,26 @@ body{
 
   function focusMarker(marker){
     activeMarker = marker;
-    const direction = marker.position.clone().normalize();
-    targetQuaternion.copy(new THREE.Quaternion().setFromUnitVectors(direction, frontVector));
-    rotatingToMarker = true;
-    controls.enabled = false;
+
+    // PERFECT CENTERING FIX
+    // we rotate the globe so that the marker points exactly toward the camera
+
+    const markerWorld = marker.position.clone().normalize();
+
+    // desired direction = camera forward (0,0,1)
+    const targetQuat = new THREE.Quaternion().setFromUnitVectors(markerWorld, new THREE.Vector3(0,0,1));
+
+    focusAnim = {
+      startQuat: globeGroup.quaternion.clone(),
+      endQuat: targetQuat,
+      progress: 0
+    };
+
     showPopup(marker.userData);
   }
 
   function onCanvasClick(event){
+    if (moved) return;
     const rect = renderer.domElement.getBoundingClientRect();
     pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
     pointer.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
@@ -608,28 +583,83 @@ body{
       }
     }
 
+    activeMarker = null;
     hidePopup();
   }
 
+  function onPointerDown(event){
+    isDragging = true;
+    moved = false;
+    dragX = event.clientX;
+    dragY = event.clientY;
+    container.classList.add('dragging');
+    focusAnim = null;
+  }
+
+  function onPointerMove(event){
+    if (!isDragging) return;
+    const dx = event.clientX - dragX;
+    const dy = event.clientY - dragY;
+    if (Math.abs(dx) > 3 || Math.abs(dy) > 3) moved = true;
+    dragX = event.clientX;
+    dragY = event.clientY;
+
+    targetRotY += dx * 0.006;
+    targetRotX += dy * 0.004;
+    targetRotX = Math.max(-0.9, Math.min(0.9, targetRotX));
+
+    activeMarker = null;
+    hidePopup();
+  }
+
+  function onPointerUp(){
+    isDragging = false;
+    container.classList.remove('dragging');
+    setTimeout(() => { moved = false; }, 0);
+  }
+
   renderer.domElement.addEventListener('click', onCanvasClick);
+  renderer.domElement.addEventListener('pointerdown', onPointerDown);
+  window.addEventListener('pointermove', onPointerMove);
+  window.addEventListener('pointerup', onPointerUp);
+  window.addEventListener('pointercancel', onPointerUp);
 
   document.addEventListener('click', (event) => {
-    if (!container.contains(event.target) && !impactCard.contains(event.target)) {
-      hidePopup();
+    if (!impactCard.contains(event.target)) {
       activeMarker = null;
+      hidePopup();
     }
   });
 
   function animate(){
     requestAnimationFrame(animate);
 
-    if (rotatingToMarker) {
-      globeGroup.quaternion.slerp(targetQuaternion, 0.1);
-      if (globeGroup.quaternion.angleTo(targetQuaternion) < 0.01) {
-        globeGroup.quaternion.copy(targetQuaternion);
-        rotatingToMarker = false;
-        controls.enabled = true;
+    if (focusAnim) {
+      focusAnim.progress = Math.min(focusAnim.progress + 0.08, 1);
+
+      const eased = 1 - Math.pow(1 - focusAnim.progress, 3);
+
+      THREE.Quaternion.slerp(
+        focusAnim.startQuat,
+        focusAnim.endQuat,
+        globeGroup.quaternion,
+        eased
+      );
+
+      if (focusAnim.progress >= 1) {
+        // sync Euler AFTER quaternion animation (prevents axis jump)
+        const euler = new THREE.Euler().setFromQuaternion(globeGroup.quaternion, 'YXZ');
+        targetRotX = euler.x;
+        targetRotY = euler.y;
+        globeGroup.rotation.set(euler.x, euler.y, 0);
+        focusAnim = null;
       }
+    }
+
+    // IMPORTANT FIX: avoid double movement
+    if (!focusAnim) {
+      globeGroup.rotation.x += (targetRotX - globeGroup.rotation.x) * 0.12;
+      globeGroup.rotation.y += (targetRotY - globeGroup.rotation.y) * 0.12;
     }
 
     markers.forEach(marker => {
@@ -638,7 +668,6 @@ body{
       marker.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.08);
     });
 
-    controls.update();
     renderer.render(scene, camera);
     updatePopupPosition();
   }
@@ -646,13 +675,15 @@ body{
   animate();
 
   window.addEventListener('resize', () => {
-    const w = container.clientWidth;
-    const h = container.clientHeight;
-    camera.aspect = w / h;
+    const width = container.clientWidth || 1;
+    const height = container.clientHeight || 420;
+    camera.aspect = width / height;
     camera.updateProjectionMatrix();
-    renderer.setSize(w, h);
+    renderer.setSize(width, height);
+    updatePopupPosition();
   });
 })();
 </script>
 </body>
+</html>
 </html>
