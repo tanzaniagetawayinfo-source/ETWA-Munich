@@ -93,8 +93,9 @@ body{
 .hero-overlay{
   position:fixed;
   inset:0;
-  background:linear-gradient(180deg, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.85) 80%);
+  background:linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.92) 85%);
   z-index:-1;
+  pointer-events:none;
 }
 .hero-content{
   position:relative;
@@ -111,6 +112,9 @@ body{
   margin:10px 0 0;
   font-size:15px;
   color:var(--muted);
+  max-width:320px;
+  margin-left:auto;
+  margin-right:auto;
 }
 .card{
   background:none;
@@ -151,19 +155,12 @@ body{
 .impact-wrap{
   position:relative;
 }
-.impact-card{
-  position:relative;
-  background:rgba(255,255,255,0.04);
-  backdrop-filter:blur(20px);
-  border:1px solid rgba(255,255,255,0.08);
-  border-radius:24px;
-  overflow:hidden;
-}
+
 #globe{
   width:100%;
   height:520px;
   cursor:grab;
-  touch-action:none;
+  touch-action:pan-y;
 }
 #globe.dragging{
   cursor:grabbing;
@@ -267,7 +264,7 @@ body{
 </div>
 
 <!-- GLOBAL BACKGROUND VIDEO -->
-<video autoplay muted loop playsinline style="position:fixed;top:0;left:0;width:100vw;height:100vh;object-fit:cover;z-index:-2;filter:brightness(0.55);">
+<video autoplay muted loop playsinline style="position:fixed;top:0;left:0;width:100vw;height:100vh;object-fit:cover;z-index:-2;">
   <source src="herocharity.mp4" type="video/mp4">
 </video>
 <div class="hero-overlay"></div>
@@ -275,7 +272,7 @@ body{
 <section class="hero">
   <div class="hero-content">
     <h1>Helping people<br>to help themselves</h1>
-    <p>Charitable funding of self-help projects worldwide</p>
+    <p>Charitable funding of self-help projects <strong>WORLDWIDE</strong></p>
   </div>
 </section>
 
@@ -323,7 +320,7 @@ body{
 <section class="section">
   <h2>Our impact</h2>
   <div class="impact-wrap">
-    <div class="impact-card" id="impactCard">
+    <div id="impactCard" style="position:relative;">
       <div id="globe"></div>
       <div id="globePopup" class="globe-popup" aria-hidden="true">
         <div class="globe-popup-title" id="globePopupTitle"></div>
@@ -331,11 +328,10 @@ body{
         <p class="globe-popup-text" id="globePopupText"></p>
       </div>
     </div>
-    <div class="impact-legend">
-      <div class="impact-pill">India · Women’s self empowerment</div>
-      <div class="impact-pill">Guatemala · Street children education</div>
-      <div class="impact-pill">Ghana · Carpentry workshop equipment</div>
     </div>
+    <p style="max-width:680px;margin:18px auto 0;opacity:0.78;line-height:1.7;">
+      ETWA Munich supports community-driven initiatives that create tangible, lasting change. By funding small-scale, locally initiated projects, the association helps unlock opportunity, strengthen independence, and improve everyday conditions across different regions of the world. Over time, this approach builds a growing network of impact—rooted in trust, direct relationships, and measurable outcomes.
+    </p>
   </div>
 </section>
 
@@ -506,10 +502,12 @@ body{
     markerGroup.position.copy(latLngToVector3(project.lat, project.lng, 1.35));
     markerGroup.userData = project;
 
+    const dotMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
     const dot = new THREE.Mesh(
       new THREE.SphereGeometry(0.042, 20, 20),
-      new THREE.MeshBasicMaterial({ color: 0xffffff })
+      dotMaterial
     );
+    markerGroup.userData.dotMaterial = dotMaterial;
     markerGroup.add(dot);
 
     const ring = new THREE.Mesh(
@@ -540,7 +538,8 @@ body{
     const y = ((-projected.y + 1) / 2) * canvasRect.height;
     const popupWidth = Math.min(260, Math.max(cardRect.width - 24, 140));
     const left = Math.max(12, Math.min(x - popupWidth / 2, cardRect.width - popupWidth - 12));
-    const top = Math.max(12, Math.min(y - 8, cardRect.height - 128));
+    // push popup lower so marker stays visible
+    const top = Math.max(12, Math.min(y + 18, cardRect.height - 128));
 
     popup.style.width = popupWidth + 'px';
     popup.style.left = left + 'px';
@@ -594,6 +593,7 @@ body{
   }
 
   function onPointerDown(event) {
+    event.preventDefault();
     isDragging = true;
     moved = false;
     dragX = event.clientX;
@@ -603,6 +603,8 @@ body{
   }
 
   function onPointerMove(event) {
+    if (!isDragging) return;
+    event.preventDefault();
     if (!isDragging) return;
     const dx = event.clientX - dragX;
     const dy = event.clientY - dragY;
@@ -625,8 +627,8 @@ body{
   }
 
   renderer.domElement.addEventListener('click', onCanvasClick);
-  renderer.domElement.addEventListener('pointerdown', onPointerDown);
-  window.addEventListener('pointermove', onPointerMove);
+  renderer.domElement.addEventListener('pointerdown', onPointerDown, { passive:false });
+  window.addEventListener('pointermove', onPointerMove, { passive:false });
   window.addEventListener('pointerup', onPointerUp);
   window.addEventListener('pointercancel', onPointerUp);
 
@@ -639,6 +641,11 @@ body{
 
   function animate() {
     requestAnimationFrame(animate);
+
+    // AUTO ROTATION when idle
+    if (!activeMarker && !isDragging && !focusAnim) {
+      targetRotY += 0.0015;
+    }
 
     if (focusAnim) {
       focusAnim.progress = Math.min(focusAnim.progress + 0.08, 1);
@@ -669,6 +676,11 @@ body{
       const isActive = marker === activeMarker;
       const targetScale = isActive ? 1.28 : 1;
       marker.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.08);
+
+      // electric blue active marker
+      if (marker.userData.dotMaterial) {
+        marker.userData.dotMaterial.color.set(isActive ? 0x00e5ff : 0xffffff);
+      }
     });
 
     renderer.render(scene, camera);
