@@ -108,6 +108,28 @@ body::before{
   max-width:640px;
   text-align:center;
 }
+.hero-actions{
+  margin-top:18px;
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  flex-wrap:nowrap;
+}
+.hero-btn{
+  padding:10px 16px;
+  border-radius:999px;
+  font-size:14px;
+  border:1px solid rgba(255,255,255,0.25);
+  background:rgba(255,255,255,0.12);
+  color:#fff;
+  backdrop-filter:blur(10px);
+  white-space:nowrap;
+}
+.hero-btn.primary{
+  background:#ffffff;
+  color:#000;
+  border:none;
+}
 .hero h1{
   margin:0;
   font-size:clamp(2rem, 6vw, 3.25rem);
@@ -131,6 +153,39 @@ body::before{
   display:grid;
   gap:20px;
 }
+
+/* HOW IT WORKS FLOW */
+.how-flow{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:16px;
+  flex-wrap:wrap;
+  margin-top:20px;
+}
+.how-box{
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.1);
+  backdrop-filter:blur(14px);
+  padding:16px 18px;
+  border-radius:16px;
+  max-width:220px;
+  font-size:14px;
+  line-height:1.5;
+}
+.how-arrow{
+  font-size:22px;
+  opacity:0.6;
+}
+
+@media(max-width:767px){
+  .how-flow{
+    flex-direction:column;
+  }
+  .how-arrow{
+    transform:rotate(90deg);
+  }
+}
 .numbers-row{
   display:flex;
   gap:16px;
@@ -140,6 +195,89 @@ body::before{
   -ms-overflow-style:none;
   scrollbar-width:none;
   margin-top:10px;
+}
+.numbers-row::-webkit-scrollbar{display:none}
+
+/* FUNDING SCROLL */
+.funding-row{
+  display:flex;
+  gap:16px;
+  overflow-x:auto;
+  scroll-snap-type:x mandatory;
+  padding-bottom:10px;
+}
+.funding-row::-webkit-scrollbar{display:none}
+.funding-card{
+  flex:0 0 260px;
+  scroll-snap-align:start;
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.1);
+  backdrop-filter:blur(14px);
+  padding:64px 18px 18px; /* raised for icon */
+  border-radius:18px;
+  font-size:14px;
+  line-height:1.6;
+  text-align:center;
+  position:relative;
+}
+.funding-icon{
+  position:absolute;
+  top:14px;
+  left:50%;
+  transform:translateX(-50%);
+  width:42px;
+  height:42px;
+  opacity:0.9;
+}
+.funding-icon svg{width:100%;height:100%;fill:#ffffff}
+.people-emoji{
+  position:relative;
+  width:60px;
+  height:50px;
+}
+.people-emoji .p{
+  position:absolute;
+  display:inline-block;
+  filter: grayscale(1) brightness(3);
+}
+.people-emoji .front{
+  font-size:34px;
+  left:50%;
+  top:0;
+  transform:translateX(-50%);
+  z-index:2;
+}
+.people-emoji .back{
+  font-size:24px;
+  top:10px;
+  opacity:0.6;
+}
+.people-emoji .back.left{
+  left:2px;
+}
+.people-emoji .back.right{
+  right:2px;
+}
+.people-emoji .p{
+  position:absolute;
+  display:inline-block;
+}
+.people-emoji .front{
+  font-size:28px;
+  left:50%;
+  top:6px;
+  transform:translateX(-50%);
+}
+.people-emoji .back{
+  font-size:20px;
+  top:14px; /* slightly lower */
+  opacity:0.85;
+}
+.people-emoji .back.left{
+  left:6px;
+}
+.people-emoji .back.right{
+  right:6px;
 }
 .numbers-row::-webkit-scrollbar{display:none}
 .number{
@@ -278,6 +416,10 @@ body::before{
   <div class="hero-content">
     <h1>Helping people<br>to help themselves</h1>
     <p>Charitable funding of self-help projects <strong>WORLDWIDE</strong></p>
+    <div class="hero-actions">
+      <button class="hero-btn primary">Become a member</button>
+      <button class="hero-btn">Donate</button>
+    </div>
   </div>
 </section>
 
@@ -292,31 +434,31 @@ body::before{
   <h2>Our numbers</h2>
   <div class="numbers-row">
     <div class="card number">
-      <div class="num" id="yearsSince">0</div>
+      <div class="num notranslate" translate="no" id="yearsSince">0</div>
       <div class="label">Years of activity</div>
     </div>
     <div class="card number">
-      <div class="num" data-target="1200000" data-currency="true">€1.2M</div>
+      <div class="num notranslate" translate="no" data-target="1200000" data-currency="true" aria-label="€1.2M">€1.2M</div>
       <div class="label">Donated via ETWA Munich</div>
     </div>
     <div class="card number">
-      <div class="num" data-target="0">0</div>
+      <div class="num notranslate" translate="no" data-target="0">0</div>
       <div class="label">Management costs</div>
     </div>
     <div class="card number">
-      <div class="num" data-target="180">0</div>
+      <div class="num notranslate" translate="no" data-target="180">0</div>
       <div class="label">Members</div>
     </div>
     <div class="card number">
-      <div class="num" data-target="9">0</div>
+      <div class="num notranslate" translate="no" data-target="9">0</div>
       <div class="label">Projects completed</div>
     </div>
     <div class="card number">
-      <div class="num" data-target="2">0</div>
+      <div class="num notranslate" translate="no" data-target="2">0</div>
       <div class="label">Projects in funding</div>
     </div>
     <div class="card number">
-      <div class="num" data-target="3">0</div>
+      <div class="num notranslate" translate="no" data-target="3">0</div>
       <div class="label">Countries involved</div>
     </div>
   </div>
@@ -342,17 +484,43 @@ body::before{
 
 <section class="section">
   <h2>How it works</h2>
-  <div class="grid">
-    <div class="card">Projects are proposed by the people concerned through trusted contacts.</div>
-    <div class="card">Members take part in deciding which projects receive support.</div>
-    <div class="card">Funds are allocated with no administrative overhead beyond banking.</div>
+  <div class="how-flow">
+    <div class="how-box">Projects are proposed by the people concerned through trusted contacts.</div>
+    <div class="how-arrow">→</div>
+    <div class="how-box">Members take part in deciding which projects receive support.</div>
+    <div class="how-arrow">→</div>
+    <div class="how-box">Funds are allocated with no administrative overhead beyond banking.</div>
   </div>
 </section>
 
 <section class="section">
   <h2>Funding</h2>
-  <div class="card">
-    The primary source of funding is member contributions, complemented by donations and fundraising activities.
+  <div class="funding-row">
+    <div class="funding-card">
+      <div class="funding-icon">
+        <!-- members icon: 3 emoji -->
+        <div class="people-emoji">
+          <span class="p back left">👤</span>
+          <span class="p back right">👤</span>
+          <span class="p front">👤</span>
+        </div>
+      </div>
+      Member contributions are the primary source of funding, ensuring stability and long-term continuity.
+    </div>
+    <div class="funding-card">
+      <div class="funding-icon">
+        <!-- donations icon -->
+        <svg viewBox="0 0 24 24"><path d="M12 21s-7-4.35-7-10a4 4 0 0 1 7-2 4 4 0 0 1 7 2c0 5.65-7 10-7 10z"/></svg>
+      </div>
+      Donations from supporters expand the ability to fund new projects and reach more communities.
+    </div>
+    <div class="funding-card">
+      <div class="funding-icon">
+        <!-- events icon -->
+        <svg viewBox="0 0 24 24"><path d="M7 2v2H5a2 2 0 0 0-2 2v2h18V6a2 2 0 0 0-2-2h-2V2h-2v2H9V2H7zm14 8H3v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V10z"/></svg>
+      </div>
+      Events and fundraising initiatives provide additional resources to support ongoing and future projects.
+    </div>
   </div>
 </section>
 
