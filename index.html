@@ -4,16 +4,25 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ETWA Munich</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
+:root{
+  --bg:#0b1220;
+  --panel:rgba(255,255,255,0.05);
+  --panel-2:rgba(255,255,255,0.08);
+  --line:rgba(255,255,255,0.12);
+  --text:#ffffff;
+  --muted:rgba(255,255,255,0.74);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
 body{
   margin:0;
   font-family:Inter, sans-serif;
-  background:#0b1220;
-  color:#fff;
+  background:var(--bg);
+  color:var(--text);
   overflow-x:hidden;
 }
-/* Floating top bar */
 .topbar{
   position:fixed;
   top:16px;
@@ -28,7 +37,7 @@ body{
   border-radius:999px;
   background:rgba(255,255,255,0.08);
   backdrop-filter:blur(14px);
-  border:1px solid rgba(255,255,255,0.12);
+  border:1px solid var(--line);
   min-width:260px;
 }
 .topbar-brand{
@@ -38,8 +47,8 @@ body{
 }
 .topbar-title{
   font-size:14px;
-  font-weight:600;
-  opacity:0.95;
+  font-weight:700;
+  opacity:0.96;
 }
 .topbar-subtitle{
   margin-top:4px;
@@ -47,17 +56,6 @@ body{
   letter-spacing:0.08em;
   text-transform:uppercase;
   opacity:0.7;
-}
-@media(max-width:767px){
-  .topbar{
-    min-width:auto;
-    width:calc(100% - 24px);
-    gap:14px;
-    padding:10px 14px;
-  }
-  .topbar-subtitle{
-    font-size:8px;
-  }
 }
 .topbar-btn{
   font-size:13px;
@@ -73,18 +71,17 @@ body{
 }
 .hero{
   position:relative;
-  height:100vh;
+  min-height:100vh;
   display:flex;
-  align-items:flex-end; /* content sits lower for thumb reach */
+  align-items:flex-end;
   justify-content:center;
   text-align:left;
   overflow:hidden;
-  padding:0 16px 24px; /* safe padding for mobile */
+  padding:0 16px 28px;
 }
 .hero video{
   position:absolute;
-  top:0;
-  left:0;
+  inset:0;
   width:100%;
   height:100%;
   object-fit:cover;
@@ -92,11 +89,8 @@ body{
 }
 .hero-overlay{
   position:absolute;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background:linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.7) 70%);
+  inset:0;
+  background:linear-gradient(180deg, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.76) 74%);
 }
 .hero-content{
   position:relative;
@@ -104,68 +98,19 @@ body{
   max-width:640px;
 }
 .hero h1{
-  font-size:36px;
-  line-height:1.2;
   margin:0;
+  font-size:clamp(2rem, 6vw, 3.25rem);
+  line-height:1.06;
 }
 .hero p{
-  opacity:0.85;
-  margin-top:10px;
+  margin:10px 0 0;
   font-size:15px;
-}
-.hero-cta{
-  margin-top:16px;
-  display:inline-block;
-  padding:12px 18px;
-  border-radius:999px;
-  background:rgba(255,255,255,0.12);
-  backdrop-filter:blur(10px);
-  border:1px solid rgba(255,255,255,0.18);
-  font-size:14px;
-}
-@media(max-width:767px){
-  .hero{
-    height:90vh; /* slightly shorter for mobile */
-  }
-  .hero h1{
-    font-size:30px;
-  }
-  .hero p{
-    font-size:14px;
-  }
-}
-.hero video{
-  position:absolute;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  filter:brightness(0.6);
-}
-.hero-overlay{
-  position:absolute;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background:linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7));
-}
-.hero-content{
-  position:relative;
-  z-index:2;
-}
-.hero h1{
-  font-size:40px;
-  line-height:1.2;
-}
-.hero p{
-  opacity:0.8;
-  margin-top:10px;
+  color:var(--muted);
 }
 .card{
-  background:rgba(255,255,255,0.05);
+  background:var(--panel);
   backdrop-filter:blur(20px);
+  border:1px solid var(--line);
   border-radius:20px;
   padding:20px;
   margin-bottom:20px;
@@ -174,52 +119,22 @@ body{
   display:grid;
   gap:20px;
 }
-@media(min-width:768px){
-  .grid{grid-template-columns:repeat(2,1fr);} 
-}
-.image-card{
-  position:relative;
-  border-radius:20px;
-  overflow:hidden;
-}
-.image-card img{
-  width:100%;
-  height:300px;
-  object-fit:cover;
-  filter:brightness(0.7);
-}
-.image-overlay{
-  position:absolute;
-  bottom:0;
-  padding:20px;
-}
 .title{
   font-size:22px;
-  font-weight:600;
+  font-weight:700;
 }
 .subtitle{
   opacity:0.8;
   font-size:14px;
 }
-.number{
-  text-align:center;
-}
-.num{
-  font-size:34px;
-  font-weight:600;
-}
-.label{
-  margin-top:8px;
-  opacity:0.7;
-  font-size:14px;
-}
-/* Horizontal numbers slider */
 .numbers-row{
   display:flex;
   gap:16px;
   overflow-x:auto;
   padding-bottom:10px;
   scroll-snap-type:x mandatory;
+  -ms-overflow-style:none;
+  scrollbar-width:none;
 }
 .numbers-row::-webkit-scrollbar{display:none}
 .number{
@@ -227,6 +142,15 @@ body{
   flex:0 0 auto;
   scroll-snap-align:start;
   text-align:center;
+}
+.num{
+  font-size:34px;
+  font-weight:700;
+}
+.label{
+  margin-top:8px;
+  opacity:0.7;
+  font-size:14px;
 }
 .impact-wrap{
   position:relative;
@@ -253,9 +177,10 @@ body{
   display:flex;
   flex-wrap:wrap;
   gap:10px;
+  pointer-events:none;
 }
 .impact-pill{
-  background:rgba(8,14,26,0.55);
+  background:rgba(8,14,26,0.58);
   border:1px solid rgba(255,255,255,0.08);
   backdrop-filter:blur(14px);
   border-radius:999px;
@@ -263,13 +188,54 @@ body{
   font-size:13px;
   color:rgba(255,255,255,0.88);
 }
+.globe-popup{
+  position:fixed;
+  z-index:1001;
+  width:min(290px, calc(100vw - 32px));
+  padding:14px 16px;
+  border-radius:18px;
+  background:rgba(8,14,26,0.88);
+  border:1px solid rgba(255,255,255,0.14);
+  backdrop-filter:blur(16px);
+  box-shadow:0 18px 50px rgba(0,0,0,0.28);
+  opacity:0;
+  pointer-events:none;
+  transform:translateY(10px);
+  transition:opacity .24s ease, transform .24s ease;
+}
+.globe-popup.visible{
+  opacity:1;
+  transform:translateY(0);
+}
+.globe-popup-title{
+  font-size:15px;
+  font-weight:700;
+  margin:0 0 4px;
+}
+.globe-popup-subtitle{
+  font-size:12px;
+  color:rgba(255,255,255,0.82);
+  margin:0 0 8px;
+}
+.globe-popup-text{
+  font-size:12px;
+  color:rgba(255,255,255,0.7);
+  line-height:1.5;
+  margin:0;
+}
+@media(min-width:768px){
+  .grid{grid-template-columns:repeat(2,1fr)}
+}
 @media(max-width:767px){
-  .section{
-    padding:64px 16px;
+  .topbar{
+    min-width:auto;
+    width:calc(100% - 24px);
+    gap:14px;
+    padding:10px 14px;
   }
-  .hero h1{
-    font-size:34px;
-  }
+  .topbar-subtitle{font-size:8px}
+  .section{padding:64px 16px}
+  .hero{min-height:90vh}
   .impact-wrap,
   .impact-card,
   #globe{
@@ -296,14 +262,12 @@ body{
 
 <section class="hero">
   <video autoplay muted loop playsinline>
-    <!-- Usa UN solo video leggero (hostato online o sostituibile) -->
     <source src="herocharity.mp4" type="video/mp4">
-</video>
+  </video>
   <div class="hero-overlay"></div>
   <div class="hero-content">
     <h1>Helping people<br>to help themselves</h1>
     <p>Charitable funding of self-help projects worldwide</p>
-    
   </div>
 </section>
 
@@ -318,16 +282,20 @@ body{
   <h2>Our numbers</h2>
   <div class="numbers-row">
     <div class="card number">
-      <div class="num" data-target="120000">0</div>
-      <div class="label">EUR donated to date</div>
+      <div class="num" id="yearsSince">0</div>
+      <div class="label">Years of activity</div>
+    </div>
+    <div class="card number">
+      <div class="num" data-target="1200000">1.2M</div>
+      <div class="label">Donated via ETWA Munich</div>
     </div>
     <div class="card number">
       <div class="num" data-target="0">0</div>
       <div class="label">Management costs</div>
     </div>
     <div class="card number">
-      <div class="num" data-target="58700">0</div>
-      <div class="label">EUR donated in the last year</div>
+      <div class="num" data-target="180">0</div>
+      <div class="label">Members</div>
     </div>
     <div class="card number">
       <div class="num" data-target="9">0</div>
@@ -353,6 +321,11 @@ body{
         <div class="impact-pill">India · Women’s self empowerment</div>
         <div class="impact-pill">Guatemala · Street children education</div>
         <div class="impact-pill">Ghana · Carpentry workshop equipment</div>
+      </div>
+      <div id="globePopup" class="globe-popup" aria-hidden="true">
+        <div class="globe-popup-title" id="globePopupTitle"></div>
+        <div class="globe-popup-subtitle" id="globePopupSubtitle"></div>
+        <p class="globe-popup-text" id="globePopupText"></p>
       </div>
     </div>
   </div>
@@ -385,8 +358,53 @@ body{
 <script src="https://cdn.jsdelivr.net/npm/three@0.134.0/examples/js/controls/OrbitControls.js"></script>
 <script>
 (function(){
+  const yearsEl = document.getElementById('yearsSince');
+  if (yearsEl) {
+    yearsEl.dataset.target = String(new Date().getFullYear() - 1997);
+  }
+
+  function formatNumber(num){
+    if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+    if (num >= 1000) return (num / 1000).toFixed(0) + 'K';
+    return String(num);
+  }
+
+  function animateValue(el){
+    const target = parseInt(el.dataset.target || '0', 10);
+    const start = 0;
+    const duration = 1200;
+    const startTime = performance.now();
+
+    function tick(now){
+      const progress = Math.min((now - startTime) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const value = Math.round(start + (target - start) * eased);
+      el.textContent = formatNumber(value);
+      if (progress < 1) requestAnimationFrame(tick);
+    }
+
+    requestAnimationFrame(tick);
+  }
+
+  const numberObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !entry.target.dataset.animated) {
+        entry.target.dataset.animated = 'true';
+        animateValue(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  document.querySelectorAll('.num').forEach(el => numberObserver.observe(el));
+
   const container = document.getElementById('globe');
-  if(!container || typeof THREE === 'undefined') return;
+  if (!container || typeof THREE === 'undefined' || typeof THREE.OrbitControls === 'undefined') return;
+
+  const popup = document.getElementById('globePopup');
+  const impactCard = document.getElementById('impactCard');
+  const popupTitle = document.getElementById('globePopupTitle');
+  const popupSubtitle = document.getElementById('globePopupSubtitle');
+  const popupText = document.getElementById('globePopupText');
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(42, container.clientWidth / container.clientHeight, 0.1, 1000);
@@ -397,27 +415,49 @@ body{
   renderer.setSize(container.clientWidth, container.clientHeight);
   container.appendChild(renderer.domElement);
 
-  const ambient = new THREE.AmbientLight(0xffffff, 0.9);
-  scene.add(ambient);
-
-  const directional = new THREE.DirectionalLight(0xffffff, 0.9);
+  scene.add(new THREE.AmbientLight(0xffffff, 0.95));
+  const directional = new THREE.DirectionalLight(0xffffff, 1.0);
   directional.position.set(4, 3, 5);
   scene.add(directional);
 
   const globeGroup = new THREE.Group();
   scene.add(globeGroup);
 
+  const textureLoader = new THREE.TextureLoader();
+  const earthTexture = textureLoader.load('https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg');
+
   const sphere = new THREE.Mesh(
     new THREE.SphereGeometry(1.45, 64, 64),
-    new THREE.MeshPhongMaterial({ color: 0x93c5fd, transparent: true, opacity: 0.12 })
+    new THREE.MeshPhongMaterial({
+      map: earthTexture,
+      transparent: true,
+      opacity: 0.86,
+      shininess: 18
+    })
   );
   globeGroup.add(sphere);
 
   const wire = new THREE.Mesh(
     new THREE.SphereGeometry(1.452, 48, 48),
-    new THREE.MeshBasicMaterial({ color: 0xe5f0ff, transparent: true, opacity: 0.18, wireframe: true })
+    new THREE.MeshBasicMaterial({
+      color: 0xe5f0ff,
+      transparent: true,
+      opacity: 0.10,
+      wireframe: true
+    })
   );
   globeGroup.add(wire);
+
+  const atmosphere = new THREE.Mesh(
+    new THREE.SphereGeometry(1.56, 48, 48),
+    new THREE.MeshBasicMaterial({
+      color: 0x9ed8ff,
+      transparent: true,
+      opacity: 0.05,
+      side: THREE.BackSide
+    })
+  );
+  globeGroup.add(atmosphere);
 
   function latLngToVector3(lat, lng, radius){
     const phi = (90 - lat) * (Math.PI / 180);
@@ -430,54 +470,179 @@ body{
   }
 
   const projects = [
-    { name: "India", desc: "Women’s empowerment", lat: 22.5, lng: 79.0 },
-    { name: "Guatemala", desc: "Street children education", lat: 15.8, lng: -90.2 },
-    { name: "Ghana", desc: "Carpentry workshop", lat: 7.9, lng: -1.0 }
+    {
+      name: 'India',
+      subtitle: 'Women’s self empowerment',
+      desc: 'Support for initiatives that strengthen independence, practical opportunity, and long-term community development for women.',
+      lat: 22.5937,
+      lng: 78.9629
+    },
+    {
+      name: 'Guatemala',
+      subtitle: 'Street children education',
+      desc: 'Support for education projects designed to provide street children with safer opportunities and meaningful access to learning.',
+      lat: 15.7835,
+      lng: -90.2308
+    },
+    {
+      name: 'Ghana',
+      subtitle: 'Carpentry workshop equipment',
+      desc: 'Support through equipment for a carpentry workshop, helping create practical skills and long-term local value.',
+      lat: 7.9465,
+      lng: -1.0232
+    }
   ];
 
   const markers = [];
-
-  projects.forEach(p => {
-    const marker = new THREE.Mesh(
-      new THREE.SphereGeometry(0.045, 20, 20),
-      new THREE.MeshBasicMaterial({ color: 0xffffff })
-    );
-
-    marker.position.copy(latLngToVector3(p.lat, p.lng, 1.5));
-    marker.userData = p;
-
-    globeGroup.add(marker);
-    markers.push(marker);
-  });
-
+  const raycaster = new THREE.Raycaster();
+  const pointer = new THREE.Vector2();
   const controls = new THREE.OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
+  controls.dampingFactor = 0.06;
   controls.enableZoom = false;
+  controls.enablePan = false;
+  controls.minPolarAngle = 0.4;
+  controls.maxPolarAngle = Math.PI - 0.4;
 
-  const raycaster = new THREE.Raycaster();
-  const mouse = new THREE.Vector2();
+  globeGroup.rotation.y = -0.8;
+  globeGroup.rotation.x = 0.18;
 
-  function onClick(event){
+  projects.forEach(project => {
+    const markerGroup = new THREE.Group();
+    const position = latLngToVector3(project.lat, project.lng, 1.5);
+    markerGroup.position.copy(position);
+    markerGroup.userData = project;
+
+    const dot = new THREE.Mesh(
+      new THREE.SphereGeometry(0.042, 20, 20),
+      new THREE.MeshBasicMaterial({ color: 0xffffff })
+    );
+    markerGroup.add(dot);
+
+    const ring = new THREE.Mesh(
+      new THREE.RingGeometry(0.06, 0.085, 36),
+      new THREE.MeshBasicMaterial({ color: 0x7dd3fc, transparent: true, opacity: 0.78, side: THREE.DoubleSide })
+    );
+    ring.lookAt(new THREE.Vector3(0, 0, 0));
+    markerGroup.add(ring);
+
+    globeGroup.add(markerGroup);
+    markers.push(markerGroup);
+  });
+
+  let activeMarker = null;
+  let rotatingToMarker = false;
+  const targetQuaternion = new THREE.Quaternion();
+  const frontVector = new THREE.Vector3(0, 0, 1);
+
+  function updatePopupPosition(){
+    if (!activeMarker || !popup.classList.contains('visible')) return;
+
+    const worldPosition = activeMarker.getWorldPosition(new THREE.Vector3());
+    const projected = worldPosition.clone().project(camera);
     const rect = renderer.domElement.getBoundingClientRect();
-    mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-    mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+    const cardRect = impactCard.getBoundingClientRect();
 
-    raycaster.setFromCamera(mouse, camera);
-    const intersects = raycaster.intersectObjects(markers);
+    const x = ((projected.x + 1) / 2) * rect.width;
+    const y = ((-projected.y + 1) / 2) * rect.height;
 
-    if(intersects.length > 0){
-      const data = intersects[0].object.userData;
-      showTooltip(data, event.clientX, event.clientY);
-    }
+    const popupWidth = Math.min(290, cardRect.width - 24);
+    const centeredLeft = x - popupWidth / 2;
+    const clampedLeft = Math.max(12, Math.min(centeredLeft, cardRect.width - popupWidth - 12));
+    const desiredTop = y + 24;
+    const clampedTop = Math.max(12, Math.min(desiredTop, cardRect.height - 128));
+
+    popup.style.width = popupWidth + 'px';
+    popup.style.left = clampedLeft + 'px';
+    popup.style.top = clampedTop + 'px';
   }
 
-  renderer.domElement.addEventListener('click', onClick);
+  function computeTargetRotation(marker){
+    const v = marker.position.clone().normalize();
+    const yaw = Math.atan2(v.x, v.z);
+    const pitch = -Math.asin(v.y);
+    return { x: pitch, y: yaw };
+  }
+
+  function setPopupContent(data){
+    popupTitle.textContent = data.name;
+    popupSubtitle.textContent = data.subtitle;
+    popupText.textContent = data.desc;
+  }
+
+  function showPopup(data){
+    setPopupContent(data);
+    popup.classList.add('visible');
+    popup.setAttribute('aria-hidden', 'false');
+    updatePopupPosition();
+  }
+
+  function hidePopup(){
+    popup.classList.remove('visible');
+    popup.setAttribute('aria-hidden', 'true');
+  }
+
+  function focusMarker(marker){
+    activeMarker = marker;
+    const direction = marker.position.clone().normalize();
+    targetQuaternion.copy(new THREE.Quaternion().setFromUnitVectors(direction, frontVector));
+    rotatingToMarker = true;
+    controls.enabled = false;
+    showPopup(marker.userData);
+  }
+
+  function onCanvasClick(event){
+    const rect = renderer.domElement.getBoundingClientRect();
+    pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+    pointer.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+    raycaster.setFromCamera(pointer, camera);
+    const intersects = raycaster.intersectObjects(markers, true);
+
+    if (intersects.length > 0) {
+      let obj = intersects[0].object;
+      while (obj && !obj.userData?.name && obj.parent) obj = obj.parent;
+      if (obj && obj.userData?.name) {
+        focusMarker(obj);
+        return;
+      }
+    }
+
+    hidePopup();
+  }
+
+  renderer.domElement.addEventListener('click', onCanvasClick);
+
+  document.addEventListener('click', (event) => {
+    if (!container.contains(event.target) && !impactCard.contains(event.target)) {
+      hidePopup();
+      activeMarker = null;
+    }
+  });
 
   function animate(){
     requestAnimationFrame(animate);
+
+    if (rotatingToMarker) {
+      globeGroup.quaternion.slerp(targetQuaternion, 0.1);
+      if (globeGroup.quaternion.angleTo(targetQuaternion) < 0.01) {
+        globeGroup.quaternion.copy(targetQuaternion);
+        rotatingToMarker = false;
+        controls.enabled = true;
+      }
+    }
+
+    markers.forEach(marker => {
+      const isActive = marker === activeMarker;
+      const targetScale = isActive ? 1.28 : 1;
+      marker.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.08);
+    });
+
     controls.update();
     renderer.render(scene, camera);
+    updatePopupPosition();
   }
+
   animate();
 
   window.addEventListener('resize', () => {
@@ -487,32 +652,6 @@ body{
     camera.updateProjectionMatrix();
     renderer.setSize(w, h);
   });
-function showTooltip(data, x, y){
-  let tooltip = document.getElementById('tooltip');
-  if(!tooltip){
-    tooltip = document.createElement('div');
-    tooltip.id = 'tooltip';
-    tooltip.style.position = 'fixed';
-    tooltip.style.background = 'rgba(10,15,25,0.85)';
-    tooltip.style.backdropFilter = 'blur(10px)';
-    tooltip.style.border = '1px solid rgba(255,255,255,0.15)';
-    tooltip.style.padding = '10px 14px';
-    tooltip.style.borderRadius = '12px';
-    tooltip.style.fontSize = '13px';
-    tooltip.style.zIndex = '9999';
-    tooltip.style.pointerEvents = 'none';
-    document.body.appendChild(tooltip);
-  }
-
-  tooltip.innerHTML = `<strong>${data.name}</strong><br>${data.desc}`;
-  tooltip.style.left = x + 'px';
-  tooltip.style.top = y + 'px';
-  tooltip.style.opacity = '1';
-
-  setTimeout(()=>{
-    tooltip.style.opacity = '0';
-  }, 2000);
-}
 })();
 </script>
 </body>
