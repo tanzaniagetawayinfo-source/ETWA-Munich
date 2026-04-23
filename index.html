@@ -90,10 +90,15 @@ body{
   z-index:-2;
   filter:brightness(0.55);
 }
-.hero-overlay{
+/* GLOBAL DARK OVERLAY FIX (prevents scroll glitch) */
+body::before{
+  content:"";
   position:fixed;
-  inset:0;
-  background:linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.92) 85%);
+  top:0;
+  left:0;
+  width:100vw;
+  height:100vh;
+  background:linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.95) 90%);
   z-index:-1;
   pointer-events:none;
 }
@@ -267,7 +272,7 @@ body{
 <video autoplay muted loop playsinline style="position:fixed;top:0;left:0;width:100vw;height:100vh;object-fit:cover;z-index:-2;">
   <source src="herocharity.mp4" type="video/mp4">
 </video>
-<div class="hero-overlay"></div>
+
 
 <section class="hero">
   <div class="hero-content">
